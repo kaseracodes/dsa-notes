@@ -32,7 +32,7 @@ int toh(int n, int A, int C, int B) {
 void solve(){
     
     int ans = toh ( 5, 1, 2, 3 );
-    cout << "The number of steps required is : " << ans << endl;
+    cout << "The number of steps required is " << ans << endl;
 
 }
 
