@@ -1,32 +1,4 @@
-move disk 1 from rod 1 to rod 2
-move disk 2 from rod 1 to rod 3
-move disk 1 from rod 2 to rod 3
-move disk 3 from rod 1 to rod 2
-move disk 1 from rod 3 to rod 1
-move disk 2 from rod 3 to rod 2
-move disk 1 from rod 1 to rod 2
-move disk 4 from rod 1 to rod 3
-move disk 1 from rod 2 to rod 3
-move disk 2 from rod 2 to rod 1
-move disk 1 from rod 3 to rod 1
-move disk 3 from rod 2 to rod 3
-move disk 1 from rod 1 to rod 2
-move disk 2 from rod 1 to rod 3
-move disk 1 from rod 2 to rod 3
-move disk 5 from rod 1 to rod 2
-move disk 1 from rod 3 to rod 1
-move disk 2 from rod 3 to rod 2
-move disk 1 from rod 1 to rod 2
-move disk 3 from rod 3 to rod 1
-move disk 1 from rod 2 to rod 3
-move disk 2 from rod 2 to rod 1
-move disk 1 from rod 3 to rod 1
-move disk 4 from rod 3 to rod 2
-move disk 1 from rod 1 to rod 2
-move disk 2 from rod 1 to rod 3
-move disk 1 from rod 2 to rod 3
-move disk 3 from rod 1 to rod 2
-move disk 1 from rod 3 to rod 1
-move disk 2 from rod 3 to rod 2
-move disk 1 from rod 1 to rod 2
-31
+the output of powerLinear is 81
+the output of powerLogrithmic is 243
+1 2 3 4 5 
+5 4 3 2 1 
