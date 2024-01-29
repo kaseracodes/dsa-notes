@@ -1,4 +1,49 @@
-the output of powerLinear is 81
-the output of powerLogrithmic is 243
-1 2 3 4 5 
-5 4 3 2 1 
+The subs-strings are as follows: 
+a
+ab
+abc
+abcd
+abcde
+b
+bc
+bcd
+bcde
+c
+cd
+cde
+d
+de
+e
+The subs-sequences are as follows: 
+
+a
+b
+ab
+c
+ac
+bc
+abc
+d
+ad
+bd
+abd
+cd
+acd
+bcd
+abcd
+e
+ae
+be
+abe
+ce
+ace
+bce
+abce
+de
+ade
+bde
+abde
+cde
+acde
+bcde
+abcde

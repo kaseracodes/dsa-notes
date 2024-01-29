@@ -52,7 +52,7 @@ void printReverse ( vector <int> &nums, int index ){
 }
 
 int maxElement ( vector <int> &nums, int index ){
-
+    
 }
 
 int firstOccurance ( vector <int> &nums, int index, int target ){
