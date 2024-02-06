@@ -51,19 +51,59 @@ void printReverse ( vector <int> &nums, int index ){
 
 }
 
+// find out the maximum element in the array from the index position to the last position
 int maxElement ( vector <int> &nums, int index ){
+
+    if ( index == nums.size() ) return INT_MIN;
+
+    int firstElement = nums[index];
+    int smallerAns = maxElement(nums, index+1);
     
+    int ans = INT_MIN;
+    if ( firstElement > smallerAns )    ans = firstElement;
+    else ans = smallerAns;
+
+    return ans;
+
 }
 
+
+// find out the first occurance of target in nums from index position to the last position
 int firstOccurance ( vector <int> &nums, int index, int target ){
 
+    if ( index == nums.size() ) return -1;
+
+    if ( nums[index] == target )    return index;
+    int smallerAns = firstOccurance(nums, index+1 , target);
+
+    return smallerAns;
+
 }
 
+// find out the last occurance of target in nums from index position to the last position
 int lastOccurance ( vector <int> &nums, int index, int target ){
-
+    return 0;
 }
 
+/** 
+ *  Find out all the occurances of target in nums from index position to the last position and return them in a vector     
+ *     i =  0  1  2  3  4  5  6  7
+ *  nums = 30 20 30 40 30 20 30 60
+ *  target = 30
+ *  Output : {0, 2, 4, 6}
+ */
 vector <int> allIndices ( vector <int> nums, int index, int target ){
+    
+    if ( index == nums.size() ){
+        vector <int> base;
+        return base;
+    }
+
+    // faith: {2, 4, 6}
+    vector <int> ans = allIndices( nums, index+1, target );
+
+    if ( nums[index] == target )    ans.push_back(index);
+    return ans;
 
 }
 
@@ -76,18 +116,36 @@ void solve(){
     int pow2 = powerLogrithmic(3, 5);
     cout << "the output of powerLogrithmic is " << pow2 << endl;
 
+    // [1, 2, 3, 4, 5, 3, 3, 3]
     vector <int> nums1;
     nums1.push_back(1);
     nums1.push_back(2);
     nums1.push_back(3);
     nums1.push_back(4);
     nums1.push_back(5);
+    nums1.push_back(3);
+    nums1.push_back(3);
+    nums1.push_back(3);
+    
 
     printArray (nums1, 0 );
     cout << endl;
 
     printReverse (nums1, 0);
     cout << endl;
+
+    int max = maxElement(nums1, 0);
+    cout << "Maximum Element in the array: " << max << endl;
+
+    int firstIndex = firstOccurance ( nums1, 0, 3 );
+    cout << "First occurance is " << firstIndex << endl;
+
+    vector <int> allOccurances = allIndices( nums1, 0, 3 );
+    cout << "All Occurances: ";
+    for ( auto index : allOccurances )  cout << index << " ";   cout << endl;
+
+
+
 
 }
 
