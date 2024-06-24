@@ -37,6 +37,26 @@ void dfs ( vector< vector<int> > &adj , int sv , vector <bool> &visited, vector 
 
 }
 
+void bfs ( vector< vector<int> > &adj , int sv , vector <bool> &visited, vector <int> &ans ){
+
+    queue <int> pendingVertices;
+    pendingVertices.push(sv);
+    visited[sv] = true;
+
+    while ( !pendingVertices.empty() ){
+        auto cv = pendingVertices.front();
+        pendingVertices.pop();
+
+        ans.push_back(cv);
+        for ( auto nv : adj[cv] ){
+            if ( !visited[nv] ){
+                pendingVertices.push(nv);
+                visited[nv] = true;
+            }
+        }
+    }
+
+}
 
 // ________________  FUNCTIONS TO BE CALLED BY THE solve() FUNCTION ________________
 
@@ -82,6 +102,24 @@ void printDFS ( vector < vector<int> > &adj ){
 
 }
 
+void printBFS ( vector < vector<int> > &adj ){
+
+    cout << "The BFS of the following graph is: " << endl;
+
+    int n = adj.size();
+    vector <bool> visited(n, false);
+    vector <int> ans;
+
+    for ( int iv = 0; iv < n ; iv++ ){
+        if ( !visited[iv] ){
+            bfs(adj, iv, visited, ans );
+        }
+    }
+
+    for ( auto val : ans )  cout << val << " "; cout << endl << endl;
+
+}
+
 void countConnectedComponents ( vector < vector<int> > &adj ){
 
     /**
@@ -124,6 +162,7 @@ void solve(){
     sortNeighbours(adj);
     // printAdjecencyList(adj);
     printDFS(adj);
+    printBFS(adj);
     countConnectedComponents(adj);
 
 }
