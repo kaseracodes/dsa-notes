@@ -58,6 +58,131 @@ void bfs ( vector< vector<int> > &adj , int sv , vector <bool> &visited, vector 
 
 }
 
+void bfs_levelwise_1 ( vector< vector<int> > &adj , int sv , vector <bool> &visited, vector < vector<int> > &ans ){
+
+    queue <int> parent, child, empty;
+    parent.push(sv);
+    visited[sv] = true;
+
+    vector <int> level;
+
+    while ( !parent.empty() ){
+        auto cv = parent.front();
+        parent.pop();
+
+        level.push_back(cv);
+        for ( auto nv: adj[cv] ){
+            if ( !visited[nv] ){
+                visited[nv] = true;
+                child.push(nv);
+            }
+        }
+
+        if ( parent.empty() ){
+            ans.push_back(level);
+            level.clear();
+            parent = child;
+            child = empty;
+        }
+
+    }
+
+} 
+
+void bfs_levelwise_2 ( vector< vector<int> > &adj , int sv , vector <bool> &visited, vector < vector<int> > &ans ){
+
+    queue < pair<int, int> > pendingVertices;
+    pair <int, int> firstPair(sv, 0);
+    pendingVertices.push(firstPair);
+    visited[sv] = true;
+
+    int nextLevel = 1;
+    vector <int> level;
+
+    while ( !pendingVertices.empty() ){
+        auto front = pendingVertices.front();
+        int cv = front.first;
+        int cl = front.second;
+        pendingVertices.pop();
+
+        if ( cl ==  nextLevel ){
+            ans.push_back(level);
+            level.clear();
+            nextLevel++;
+        }
+
+        level.push_back(cv);
+        for ( auto nv: adj[cv] ){
+            if ( !visited[nv] ){
+                visited[nv] = true;
+                pair <int, int> newPair(nv, cl+1);
+                pendingVertices.push(newPair);
+            }
+        }
+    }
+
+    ans.push_back(level);
+
+}
+
+void bfs_levelwise_3 ( vector< vector<int> > &adj , int sv , vector <bool> &visited, vector < vector<int> > &ans ){
+
+    queue <int> pendingVertices;
+    pendingVertices.push(sv);
+    visited[sv] = true;
+
+    int parentCount = 1, childCount = 0;
+
+    vector <int> level;
+    while ( !pendingVertices.empty() ){
+        auto cv = pendingVertices.front();
+        pendingVertices.pop();
+        parentCount--;
+
+        level.push_back(cv);
+        for ( auto nv : adj[cv] ){
+            if ( !visited[nv] ){
+                pendingVertices.push(nv);
+                visited[nv] = true;
+                childCount++;
+            }
+        }
+
+        if ( parentCount == 0 ){
+            ans.push_back(level);
+            level.clear();
+            parentCount = childCount;
+            childCount = 0;
+        }
+    }
+
+}
+
+vector <int> get_dfs_path ( vector< vector<int> > &adj, int sv , int ev, vector <bool> &visited ){
+
+    visited[sv] = true;
+    if ( sv == ev ){
+        vector <int> bpath;
+        bpath.push_back(sv);
+        return bpath;
+    }
+
+    for ( auto nv: adj[sv] ){
+        if ( !visited[nv] ){
+            visited[nv] = true;
+            vector <int> npath = get_dfs_path(adj, nv, ev, visited );
+            if ( npath.size() >  0 ){
+                npath.push_back(sv);
+                return npath;
+            }
+        }
+    }
+
+    vector <int> empthPath;
+    return empthPath;
+
+}
+
 // ________________  FUNCTIONS TO BE CALLED BY THE solve() FUNCTION ________________
 
 void sortNeighbours ( vector < vector<int> > &adj ){
@@ -120,6 +245,33 @@ void printBFS ( vector < vector<int> > &adj ){
 
 }
 
+void printBFSLevelwise ( vector < vector<int> > &adj ){
+
+    cout << "The BFS Levelwise of the following graph is: " << endl;
+
+    int n = adj.size();
+    vector <bool> visited(n, false);
+    vector < vector<int> > ans;
+
+    for ( int iv = 0; iv < n ; iv++ ){
+        if ( !visited[iv] ){
+            bfs_levelwise_3(adj, iv, visited, ans );
+        }
+    }
+
+    int countLevel = 0;
+    for ( auto level : ans ){
+        cout << "Level " << countLevel << " --> ";
+        for ( auto vertex : level ){
+            cout << vertex << " ";
+        }
+        countLevel++;
+        cout << endl;
+    }
+    cout << endl;
+
+}
+
 void countConnectedComponents ( vector < vector<int> > &adj ){
 
     /**
@@ -143,6 +295,23 @@ void countConnectedComponents ( vector < vector<int> > &adj ){
 
 }
 
+void printDFSPath (vector < vector<int> > &adj ){
+
+    int n = adj.size();
+    vector <bool> visited(n, false);
+
+    int sv = 0, ev = 11;
+    cout << "The DFS path from " << sv << " vertex to the " << ev << " vertex is : " << endl;
+
+    vector <int> path = get_dfs_path(adj, sv, ev, visited );
+
+    reverse ( path.begin(), path.end() );
+    for ( auto vertex : path ){
+        cout << vertex << " ";
+    }
+    cout << endl << endl;
+
+}
 
 // ___________________ MAIN FUNCTIONS ________________________ 
 
@@ -164,6 +333,8 @@ void solve(){
     printDFS(adj);
     printBFS(adj);
     countConnectedComponents(adj);
+    printBFSLevelwise(adj);
+    printDFSPath(adj);
 
 }
 
