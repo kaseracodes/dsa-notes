@@ -1,7 +1,8 @@
-the output of powerLinear is 81
-the output of powerLogrithmic is 243
-1 2 3 4 5 3 3 3 
-3 3 3 5 4 3 2 1 
-Maximum Element in the array: 5
-First occurance is 2
-All Occurances: 7 6 5 2 
+The DFS of the following graph is: 
+0 1 6 7 8 9 10 2 3 4 11 5 12 13 14 
+
+The BFS of the following graph is: 
+0 1 2 6 3 11 7 9 4 5 8 10 12 13 14 
+
+The number of connected components of the following graph are: 2
+
