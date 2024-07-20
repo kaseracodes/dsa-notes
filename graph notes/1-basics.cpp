@@ -169,7 +169,6 @@ vector <int> get_dfs_path ( vector< vector<int> > &adj, int sv , int ev, vector 
 
     for ( auto nv: adj[sv] ){
         if ( !visited[nv] ){
-            visited[nv] = true;
             vector <int> npath = get_dfs_path(adj, nv, ev, visited );
             if ( npath.size() >  0 ){
                 npath.push_back(sv);
@@ -225,6 +224,34 @@ vector <int> get_bfs_path ( vector< vector<int> > &adj, int sv , int ev, vector 
     }
     return path;
 
+
+}
+
+vector < vector<int> > get_all_paths ( vector< vector<int> > &adj, int sv , int ev, vector <bool> &visited ){
+
+    if ( sv == ev ){
+        vector <int> bpath;
+        vector < vector<int> > bpaths;
+        bpath.push_back(sv);
+        bpaths.push_back(bpath);
+        return bpaths;
+    }
+
+    visited[sv] = true;
+    vector < vector<int> > ans;
+
+    for ( auto nv : adj[sv] ){
+        if ( !visited[nv] ){
+            vector < vector<int> > npaths = get_all_paths ( adj, nv, ev, visited );
+            for ( auto npath : npaths ){
+                npath.push_back(sv);
+                ans.push_back(npath);
+            }
+        }
+    }
+
+    visited[sv] = false;
+    return ans; 
 
 }
 
@@ -376,6 +403,25 @@ void printBFSPath ( vector < vector<int> > &adj ){
 
 }
 
+void printAllPaths ( vector < vector<int> > &adj ){
+
+    int n = adj.size();
+    vector <bool> visited(n, false);
+
+    int sv = 0, ev = 11;
+    cout << "Printing all the paths from " << sv << " to the " << ev << ": " << endl;
+
+    vector < vector<int> > allPaths = get_all_paths(adj, sv, ev, visited);
+    for ( auto path : allPaths ){
+        for ( auto vertex : path ){
+            cout << vertex << " ";
+        }
+        cout << endl;
+    }
+
+
+}
+
 // ___________________ MAIN FUNCTIONS ________________________ 
 
 void solve(){
@@ -399,6 +445,7 @@ void solve(){
     printBFSLevelwise(adj);
     printDFSPath(adj);
     printBFSPath(adj);
+    printAllPaths(adj);
 
 }
 
