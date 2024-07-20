@@ -183,6 +183,51 @@ vector <int> get_dfs_path ( vector< vector<int> > &adj, int sv , int ev, vector 
 
 }
 
+vector <int> get_bfs_path ( vector< vector<int> > &adj, int sv , int ev, vector <bool> &visited ){
+
+    queue <int> pendingVertices;
+    pendingVertices.push(sv);
+    map <int, int> parentOf;
+    visited[sv] = true;
+    parentOf[sv] = INT_MIN;
+
+    bool isReacheable = false;
+
+    while ( !pendingVertices.empty() ){
+        auto cv = pendingVertices.front();
+        pendingVertices.pop();
+
+        if ( cv == ev ){
+            isReacheable = true;
+            break;
+        }
+
+        for ( auto nv : adj[cv] ){
+            if ( !visited[nv] ){
+                pendingVertices.push(nv);
+                parentOf[nv] = cv;
+                visited[nv] = true;
+            }
+        }
+    }
+
+    if ( !isReacheable ){
+        vector <int> empty;
+        return empty;
+    }
+
+    int cv = ev;
+    vector <int> path;
+    while ( cv != INT_MIN){
+        path.push_back(cv);
+        int parent = parentOf[cv];
+        cv = parent;
+    }
+    return path;
+
+
+}
+
 // ________________  FUNCTIONS TO BE CALLED BY THE solve() FUNCTION ________________
 
 void sortNeighbours ( vector < vector<int> > &adj ){
@@ -300,10 +345,28 @@ void printDFSPath (vector < vector<int> > &adj ){
     int n = adj.size();
     vector <bool> visited(n, false);
 
-    int sv = 0, ev = 11;
+    int sv = 0, ev = 11; // can instead take input from the user as well
     cout << "The DFS path from " << sv << " vertex to the " << ev << " vertex is : " << endl;
 
     vector <int> path = get_dfs_path(adj, sv, ev, visited );
+
+    reverse ( path.begin(), path.end() );
+    for ( auto vertex : path ){
+        cout << vertex << " ";
+    }
+    cout << endl << endl;
+
+}
+
+void printBFSPath ( vector < vector<int> > &adj ){
+
+    int n = adj.size();
+    vector <bool> visited(n, false);
+
+    int sv = 0, ev = 11;
+    cout << "The BFS path from " << sv << " vertex to the " << ev << " vertex is : " << endl;
+
+    vector <int> path = get_bfs_path( adj, sv, ev, visited );
 
     reverse ( path.begin(), path.end() );
     for ( auto vertex : path ){
@@ -335,6 +398,7 @@ void solve(){
     countConnectedComponents(adj);
     printBFSLevelwise(adj);
     printDFSPath(adj);
+    printBFSPath(adj);
 
 }
 
