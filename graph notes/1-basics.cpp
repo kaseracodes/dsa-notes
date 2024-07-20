@@ -255,6 +255,49 @@ vector < vector<int> > get_all_paths ( vector< vector<int> > &adj, int sv , int 
 
 }
 
+bool has_cycle_dfs ( vector < vector<int> > &adj, int sv, int parent, vector <bool> &visited ){
+
+    visited[sv] = true;
+
+    for ( auto nv : adj[sv] ){
+        if ( visited[nv] && nv != parent )  return true;
+        if ( !visited[nv] ){
+            bool hasNeighbourLoop = has_cycle_dfs ( adj, nv, sv, visited );
+            if ( hasNeighbourLoop )     return true;
+        }
+    }
+
+    return false;
+
+}
+
+bool has_cycle_bfs ( vector < vector<int> > &adj, int sv, int parent, vector <bool> &visited ) {
+
+    queue <int> pendingVertices;
+    pendingVertices.push(sv);
+    map <int, int> parentOf;
+    visited[sv] = true;
+    parentOf[sv] = parent;
+
+
+    while ( !pendingVertices.empty() ){
+        auto cv = pendingVertices.front();
+        pendingVertices.pop();
+
+        for ( auto nv : adj[cv] ){
+            if ( visited[nv] && nv != parentOf[cv] )    return true;
+            if ( !visited[nv] ){
+                pendingVertices.push(nv);
+                parentOf[nv] = cv;
+                visited[nv] = true;
+            }
+        }
+    }
+
+    return false;
+
+}
+
 // ________________  FUNCTIONS TO BE CALLED BY THE solve() FUNCTION ________________
 
 void sortNeighbours ( vector < vector<int> > &adj ){
@@ -418,7 +461,60 @@ void printAllPaths ( vector < vector<int> > &adj ){
         }
         cout << endl;
     }
+    cout << endl;
 
+}
+
+bool hasCycleDFS ( vector < vector<int> > &adj ){
+
+    int n = adj.size();
+    vector <bool> visited(n, false);
+
+    for ( int iv = 0 ; iv < n ; iv++ ){
+        if ( !visited[iv] ){
+            if ( has_cycle_dfs ( adj, iv, INT_MIN,  visited ) ){
+                return true;
+            }
+        }
+    }
+    return false;
+
+} 
+
+bool hasCycleBFS ( vector < vector<int> > &adj ){
+
+    int n = adj.size();
+    vector <bool> visited(n, false);
+
+    for ( int iv = 0 ; iv < n ; iv++ ){
+        if ( !visited[iv] ){
+            if ( has_cycle_bfs ( adj, iv, INT_MIN,  visited ) ){
+                return true;
+            }
+        }
+    }
+    return false;
+
+} 
+
+void printHasCycle ( vector < vector<int> > &adj, bool useDfsApproach ){
+
+    bool isCyclePresent;
+
+    if ( useDfsApproach ){
+        isCyclePresent = hasCycleDFS(adj);
+    }
+    else{
+        isCyclePresent = hasCycleBFS(adj);
+    }
+     
+
+    if ( isCyclePresent ){
+        cout << "The graph has a cycle." << endl;
+    }
+    else{
+        cout << "The graph does not have a cycle." << endl;
+    }
 
 }
 
@@ -446,6 +542,7 @@ void solve(){
     printDFSPath(adj);
     printBFSPath(adj);
     printAllPaths(adj);
+    printHasCycle(adj, false);
 
 }
 
